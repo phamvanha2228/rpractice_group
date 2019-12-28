@@ -6,7 +6,7 @@ library(rvest)
 library(tidyverse)
 library(xml2)
 library(stringr)
-# library(janitor)
+
 
 ##To get data directly from web
 
@@ -59,12 +59,9 @@ while (i < length(output$link)+1 ) {
     i = i+1
 }
 
-####this step will take time to get data. check in the evironement pannel to see that whether the dataframe gets data or not?
 
 
 ##step 4. clean the data. 
-
-sea
 test <- sea[-which(sea[2] == ""), ]
 
 test <- test[-which(test[1] == "Font: Departament de Medi Ambient i Habitatge. Servei Meteorològic de Catalunya."), ]
@@ -72,7 +69,7 @@ test <- test[-which(test[1] == "Font: Departament de Medi Ambient i Habitatge. S
 test <- test[-which(test[1] == "Font: Departament de Medi Ambient. Servei Meteorològic de Catalunya."),]
 test <- test[-which(test[1] == "Font: Departament de Territori i Sostenibilitat. Servei Meteorològic de Catalunya."),]
 
-## step 5. Name the columns
+##step 5. Name the columns
 names(test)[2] <- "Deep_0_m"
 names(test)[3] <- "Deep_minus20_m"
 names(test)[4] <- "Deep_minus50_m"
@@ -84,8 +81,8 @@ test <- test[-which(test[1] == ""), ]
 test <- test[-c(grep("Any", test$year_month)),]
 
 ####change data into numeric
-test$Deep_minus80_m <- sub(",", ".", test$Deep_minus80_m)
 
+test$Deep_minus80_m <- sub(",", ".", test$Deep_minus80_m)
 test$Deep_minus50_m <- sub(",", ".", test$Deep_minus50_m)
 test$Deep_minus20_m <- sub(",", ".", test$Deep_minus20_m)
 test$Deep_0_m <- sub(",", ".", test$Deep_0_m)
@@ -108,10 +105,6 @@ substrRight <- function(x, n){
 final_table <- test
 
 final_table$Period_comp <- NA
-
-# for checking 
-# library(plyr)
-# count(as.factor(final_table$year))
 
 
 e <- 0
@@ -148,10 +141,6 @@ final_table$month <-  ifelse(final_table$year_month =="gener"|final_table$year_m
 final_table$type <- ifelse( is.na(final_table$Period_comp)== TRUE, "starting year","compared period")
 
 final_table <- final_table[-c(grep("Període", final_table$year_month)),]
-
-# library(openxlsx)
-# write.xlsx(final_table, 'sea_temperature_fixed.xlsx')
-
 
 
 library(reshape)
